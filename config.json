@@ -1,0 +1,24 @@
+{
+    "train_target_names": [
+        "comp.os.ms-windows.misc",
+        "rec.sport.baseball",
+        "talk.politics.mideast",
+        "sci.crypt",
+        "rec.autos",
+        "comp.graphics",
+        "rec.motorcycles",
+        "misc.forsale",
+        "sci.space",
+        "sci.med",
+        "rec.sport.hockey",
+        "soc.religion.christian",
+        "talk.religion.misc",
+        "sci.electronics",
+        "comp.windows.x",
+        "comp.sys.ibm.pc.hardware",
+        "alt.atheism",
+        "talk.politics.guns",
+        "comp.sys.mac.hardware",
+        "talk.politics.misc"
+    ]
+}
