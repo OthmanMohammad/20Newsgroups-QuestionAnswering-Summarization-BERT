@@ -1,3 +1,5 @@
+from flask import render_template
+from flask_cors import CORS
 import json
 from flask import Flask, request, jsonify
 import torch
@@ -6,6 +8,11 @@ from transformers import (BertTokenizer, BertForSequenceClassification, BartForC
 
 
 app = Flask(__name__)
+CORS(app)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 MODEL_DIR = "models/model"
 TOKENIZER_DIR = "models/tokenizer"
@@ -65,7 +72,7 @@ def classify_text(text, model, tokenizer, device):
 @app.route("/classify", methods=["POST"])
 def classify_endpoint():
     # Get the text from the request
-    data = request.get_json()
+    data = request.get_json(force=True)
     text = data.get("text", "")
 
     if not text:
@@ -90,7 +97,7 @@ def summarize_text(text, model, tokenizer, device):
 
 @app.route("/summarize", methods=["POST"])
 def summarize_endpoint():
-    data = request.get_json()
+    data = request.get_json(force=True)
     text = data.get("text", "")
 
     if not text:
@@ -119,7 +126,7 @@ def answer_question(question, context, model, tokenizer, device):
 
 @app.route("/answer", methods=["POST"])
 def answer_endpoint():
-    data = request.get_json()
+    data = request.get_json(force=True)
     question = data.get("question", "")
     context = data.get("context", "")
     model_choice = data.get("model_choice", "").lower()
