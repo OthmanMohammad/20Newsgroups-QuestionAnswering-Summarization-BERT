@@ -7,7 +7,6 @@ from transformers import (BertTokenizer, BertForSequenceClassification, BartForC
 
 app = Flask(__name__)
 
-# Paths based on your project structure
 MODEL_DIR = "models/model"
 TOKENIZER_DIR = "models/tokenizer"
 
@@ -25,9 +24,9 @@ summarization_tokenizer = BartTokenizer.from_pretrained(summarization_model_name
 summarization_model = BartForConditionalGeneration.from_pretrained(summarization_model_name)
 
 # using BERT for QA
-qa_model_default_name = "bert-large-uncased-whole-word-masking-finetuned-squad"
-qa_tokenizer_default = BertTokenizer.from_pretrained(qa_model_default_name)
-qa_model_default = BertForQuestionAnswering.from_pretrained(qa_model_default_name)
+qa_model_bert_name = "bert-large-uncased-whole-word-masking-finetuned-squad"
+qa_tokenizer_bert = BertTokenizer.from_pretrained(qa_model_bert_name)
+qa_model_bert = BertForQuestionAnswering.from_pretrained(qa_model_bert_name)
 
 # additional QA model (roberta)
 qa_model_roberta_name = "consciousAI/question-answering-roberta-base-s-v2"
@@ -59,7 +58,7 @@ def classify_text(text, model, tokenizer, device):
     predicted_class_idx = torch.argmax(outputs.logits, 1).item()
 
     # Convert the predicted class index into its corresponding label
-    predicted_class_label = train_target_names[predicted_class_idx]  # Make sure to define train_target_names
+    predicted_class_label = train_target_names[predicted_class_idx]
 
     return predicted_class_label
 
@@ -123,16 +122,20 @@ def answer_endpoint():
     data = request.get_json()
     question = data.get("question", "")
     context = data.get("context", "")
-    model_choice = data.get("model_choice", "default")
+    model_choice = data.get("model_choice", "").lower()
 
     if not question or not context:
         return jsonify({"error": "Question or context not provided"}), 400
 
     if model_choice == "roberta":
         answer = answer_question(question, context, qa_model_roberta, qa_tokenizer_roberta, device)
+    elif model_choice == "bert":
+        answer = answer_question(question, context, qa_model_bert, qa_tokenizer_bert, device)
     else:
-        answer = answer_question(question, context, qa_model_default, qa_tokenizer_default, device)
+        return jsonify({"error": "Invalid model choice. Please choose either 'roberta' or 'bert'."}), 400
+
     return jsonify({"answer": answer})
+
 
 
 
