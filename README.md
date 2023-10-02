@@ -18,6 +18,10 @@ This repository offers a Flask web application designed for in-depth analysis of
 
 ## Getting Started:
 
+### Dataset:
+
+You can download the 20 Newsgroups dataset from [this link](https://huggingface.co/datasets/MohammadOthman/20-News-Groups).
+
 ### Prerequisites:
 
 - Python 3.x
