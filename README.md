@@ -50,3 +50,7 @@ Start the Flask server:
 ```bash
 python app.py
 ```
+
+## Demo Video
+
+[Watch the Demo Video Here](https://drive.google.com/file/d/1rzhV54ws2fuk3tQ80rqIrfiLst-zr0r6/preview)
